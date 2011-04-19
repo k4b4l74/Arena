@@ -1,0 +1,26 @@
+name: Arena
+main: kabal.arena.plugin.Arena
+version: "0.1"
+commands:
+	arRoundLimit:
+		description: Set the max round limit.
+		usage: /<command> number
+    arAddRed:
+    	description: Add a player to the red team.
+    	usage: /<command> playerName
+    arAddBlue:
+    	description: Add a player to the blue team.
+    	usage: /<command> playerName
+    arRemovePlayer:
+    	description: Remove a player from the game.
+    	usage: /<command> playerName
+    arSpec:
+    	description: Set spectators spawn point.
+    	usage: /<command>
+    arStart:
+        description: Starts the game.
+        usage: /<command> 
+    arStop:
+    	description: Stop the game.
+    	usage: /<command>
+    
