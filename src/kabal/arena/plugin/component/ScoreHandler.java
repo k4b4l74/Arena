@@ -1,11 +1,15 @@
 package kabal.arena.plugin.component;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 
 import kabal.arena.player.ArenaPlayer;
 import kabal.arena.plugin.ArenaGame;
@@ -39,7 +43,7 @@ public class ScoreHandler implements ArenaHandler {
 		addDeath(deadPlayer);
 		
 		if (event instanceof EntityDamageByEntityEvent) {
-			EntityDamageByEntityEvent damageEvent = ( EntityDamageByEntityEvent  )event;
+			EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) event;
 			
 			if ((damageEvent.getDamager() instanceof Player) &&
 				(damageEvent.getEntity() instanceof Player)) {					
@@ -51,6 +55,16 @@ public class ScoreHandler implements ArenaHandler {
 					addKill(attackerPlayer);
 				}
 			}
+		}
+	}
+	
+	public void onEntityDeath_showScore(ArenaPlayer deadPlayer, EntityDeathEvent event) {
+		Server server = deadPlayer.getPlayer().getServer();
+		server.broadcastMessage(ChatColor.GREEN + "Scores");
+		for (Iterator<ArenaPlayer> iterator = scores.keySet().iterator(); iterator.hasNext();) {
+			ArenaPlayer arenaPlayer = iterator.next();
+			Map<ScoreType, Integer> score = scores.get(arenaPlayer);
+			server.broadcastMessage(ChatColor.GREEN+arenaPlayer.getPlayer().getName()+ " KILL:" + score.get(ScoreType.KILL) + " / DEATH:" + score.get(ScoreType.DEATH));
 		}
 	}
 	

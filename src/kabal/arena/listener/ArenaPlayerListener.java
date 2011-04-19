@@ -26,7 +26,8 @@ public class ArenaPlayerListener extends PlayerListener {
 		if (arenaPlayer != null && arenaGame.isGameStarted()) {
 			//CHECK IF PLAYER IS DEAD, IF YES HE BECOME AN OBSERVER !
 			if (arenaGame.getPlayerHandler().onPlayerRespawn_isPlayerDied(arenaPlayer)) {
-				//TODO: TELEPORT HIM TO THE OBSERVER SPAWN POINT AS A GHOST
+				//TELEPORT TO SPECTATOR SPAWN
+				arenaGame.getSpawnHandler().onPlayerRespawn_teleportToSpectatorSpawn(arenaPlayer, event);
 			}
 		}
 	}
@@ -36,7 +37,8 @@ public class ArenaPlayerListener extends PlayerListener {
 		Player player = event.getPlayer();
 		ArenaPlayer arenaPlayer = arenaGame.getArenaPlayer(player);
 		if (arenaPlayer != null && arenaGame.isGameStarted()) {
-			//TODO: TELEPORT HIM TO THE OBSERVER SPAWN AS A GHOST
+			//TELEPORT TO SPECTATOR SPAWN
+			arenaGame.getSpawnHandler().onPlayerJoin_teleportToSpectatorSpawn(arenaPlayer, event);
 		}
 	}
 	
@@ -46,9 +48,11 @@ public class ArenaPlayerListener extends PlayerListener {
 		ArenaPlayer arenaPlayer = arenaGame.getArenaPlayer(player);
 		if (arenaPlayer != null) {
 			if (arenaGame.isGameStarted()) {
-				//TODO: PLAYER QUIT AND GAME IS LAUNCHED, MARK HIM AS DEAD
+				//MARK HIM AS DEAD
+				arenaGame.getPlayerHandler().onPlayerQuit_markDead(arenaPlayer, event);
 			} else {
-				//TODO: PLAYER QUIT BEFORE GAME START, REMOVE HIM FROM THE TEAM LIST
+				//PLAYER QUIT BEFORE GAME START, REMOVE HIM FROM THE TEAM LIST
+				arenaGame.getPlayerHandler().onPlayerQuit_removePlayerOffTeam(arenaPlayer, event);
 			}
 		}
 	}

@@ -49,16 +49,18 @@ public class ArenaEntityListener extends EntityListener {
 				//CHECK IF GAME IS FINISHED
 				if (arenaGame.getRoundHandler().onEntityDeath_isGameFinished()) {
 					
-					//TODO: SHOW SCORE
-					
+					//SHOW SCORE
+					arenaGame.getScoreHandler().onEntityDeath_showScore(arenaPlayer, event);
 				}
 				
 				//MAKE PLAYERS ALIVE
 				arenaGame.getPlayerHandler().onEntityDeath_playersAlive();
 				
-				//TODO: FORCE RESPAWN ALL PLAYERS TO THEIR SPAWN POINT
+				//GIVE THEM STUFF & HEALTH
+				arenaGame.getPlayerHandler().onEntityDeath_giveMaxHealtAndPlayerInventory(event);
 				
-				
+				//FORCE RESPAWN ALL PLAYERS TO THEIR SPAWN POINT
+				arenaGame.getSpawnHandler().onEntityDeath_teleportAllPlayersToSpawn(event);
 			}
 		}
 	}

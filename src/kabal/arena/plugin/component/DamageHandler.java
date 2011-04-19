@@ -2,6 +2,8 @@ package kabal.arena.plugin.component;
 
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import kabal.arena.item.Arrow;
+import kabal.arena.item.PickAxe;
 import kabal.arena.player.ArenaPlayer;
 import kabal.arena.plugin.ArenaGame;
 
@@ -31,7 +33,11 @@ public class DamageHandler implements ArenaHandler {
 		if (player.isDead()) {
 			event.setCancelled(true);
 		} else {
+			//PickAxe Damage Modifier
+			PickAxe.setDamage(event);
 			
+			//Arrow Damage Modifier
+			Arrow.setDamage(player, event);
 		}
 	}
 

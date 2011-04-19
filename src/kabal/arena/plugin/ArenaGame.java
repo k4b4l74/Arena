@@ -33,7 +33,6 @@ public class ArenaGame {
 	private DamageHandler damageHandler = null;
 	private PlayerHandler playerHandler = null;
 	
-	
 	private static ArenaGame instance = null;
 	
 	public ArenaGame() {
@@ -307,6 +306,25 @@ public class ArenaGame {
 	}
 	
 	/**
+	 * Call this for know if an arenaPlayer belongs to Red Team or not
+	 * @param aPlayer
+	 * @return
+	 */
+	public boolean isOnRedTeam(ArenaPlayer aPlayer) {
+		boolean isOnRedTeam = false;
+		if (redTeam != null) {
+			for (Iterator<ArenaPlayer> iterator = redTeam.iterator(); iterator.hasNext();) {
+				ArenaPlayer arenaPlayer = iterator.next();
+				if (arenaPlayer.getPlayer().getName().equals(aPlayer.getPlayer().getName())) {
+					isOnRedTeam = true;
+					break;
+				}
+			}
+		}		
+		return isOnRedTeam;
+	}
+	
+	/**
 	 * Return the state of the game
 	 * @return true of game has started
 	 */
@@ -324,7 +342,6 @@ public class ArenaGame {
 	/*
 	 * GETTERS
 	 */
-	
 	public Integer getRoundlimit() {
 		return roundlimit;
 	}
