@@ -7,13 +7,18 @@ import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
+import org.bukkit.plugin.Plugin;
+
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 public class ArenaEntityListener extends EntityListener {
 
 	private ArenaGame arenaGame;
+	private Plugin plugin;
 	
-	public ArenaEntityListener(ArenaGame aArenaGame) {
+	public ArenaEntityListener(ArenaGame aArenaGame, Plugin aPlugin) {
 		arenaGame = aArenaGame;
+		plugin = aPlugin;
 	}
 	
 	@Override
@@ -35,7 +40,7 @@ public class ArenaEntityListener extends EntityListener {
 	}
 	
 	@Override
-	public void onEntityDeath(EntityDeathEvent event) {
+	public void onEntityDeath(final EntityDeathEvent event) {
 		Entity entity = event.getEntity();
 		
 		ArenaPlayer arenaPlayer = arenaGame.getArenaPlayer(entity);
@@ -44,7 +49,7 @@ public class ArenaEntityListener extends EntityListener {
 			arenaGame.getPlayerHandler().onEntityDeath_playerDied(arenaPlayer);
 			
 			// CHECK IF A TEAM WIN THE ROUND
-			if (arenaGame.getRoundHandler().onEntityDeath_isATeamWin()) {
+			if (arenaGame.getRoundHandler().onEntityDeath_isATeamWin(arenaPlayer)) {
 				
 				//CHECK IF GAME IS FINISHED
 				if (arenaGame.getRoundHandler().onEntityDeath_isGameFinished()) {
@@ -53,14 +58,18 @@ public class ArenaEntityListener extends EntityListener {
 					arenaGame.getScoreHandler().onEntityDeath_showScore(arenaPlayer, event);
 				}
 				
-				//MAKE PLAYERS ALIVE
-				arenaGame.getPlayerHandler().onEntityDeath_playersAlive();
-				
-				//GIVE THEM STUFF & HEALTH
-				arenaGame.getPlayerHandler().onEntityDeath_giveMaxHealtAndPlayerInventory(event);
-				
-				//FORCE RESPAWN ALL PLAYERS TO THEIR SPAWN POINT
-				arenaGame.getSpawnHandler().onEntityDeath_teleportAllPlayersToSpawn(event);
+				plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
+					public void run() {
+						//MAKE PLAYERS ALIVE
+						arenaGame.getPlayerHandler().onEntityDeath_playersAlive();
+						
+						//GIVE THEM STUFF & HEALTH
+						arenaGame.getPlayerHandler().onEntityDeath_giveMaxHealtAndPlayerInventory(event);
+						
+						//FORCE RESPAWN ALL PLAYERS TO THEIR SPAWN POINT
+						arenaGame.getSpawnHandler().onEntityDeath_teleportAllPlayersToSpawn(event);
+					}
+				}, 20 * 2);
 			}
 		}
 	}

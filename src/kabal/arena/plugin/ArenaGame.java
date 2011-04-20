@@ -233,6 +233,15 @@ public class ArenaGame {
 		}			
 	}
 	
+	public void proceedCommandSetSpectatorSpawn(Player sender, String[] args) {
+		if (isGameStarted()) {
+			sender.sendMessage(ChatColor.RED + "Game is started, you can't set now the spectator point");
+		} else {
+			spectatorLocation = sender.getLocation();
+			sender.sendMessage(ChatColor.GREEN + "Spectator point has been set");
+		}
+	}
+	
 	/*
 	 * 
 	 * UTILS FUNCTIONS

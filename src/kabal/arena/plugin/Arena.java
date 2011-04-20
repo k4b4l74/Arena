@@ -23,9 +23,9 @@ public class Arena extends JavaPlugin {
 	private static final ArenaGame arenaGame = ArenaGame.getInstance();
 	
 	//Listener
-	private static final ArenaBlockListener blockListener = new ArenaBlockListener(arenaGame);
-	private static final ArenaEntityListener entityListener = new ArenaEntityListener(arenaGame);
-	private static final ArenaPlayerListener playerListener = new ArenaPlayerListener(arenaGame);
+	private final ArenaBlockListener blockListener = new ArenaBlockListener(arenaGame, this);
+	private final ArenaEntityListener entityListener = new ArenaEntityListener(arenaGame, this);
+	private final ArenaPlayerListener playerListener = new ArenaPlayerListener(arenaGame, this);
 	
 	@Override
 	public void onDisable() {
@@ -56,6 +56,8 @@ public class Arena extends JavaPlugin {
 		String commandName = command.getName();
 		PermissionModule permissionModule = PermissionModule.getInstance(getServer().getPluginManager());
 		Player player = (Player) sender;
+		
+		log.info( "Commande type is: " + commandName);	
 		
 		//ADD BLUE PLAYER
 		if (commandName.equalsIgnoreCase(CommandList.CMD_ADD_BLUEPLAYER)) {
@@ -115,6 +117,15 @@ public class Arena extends JavaPlugin {
 				player.sendMessage(ChatColor.RED + "You don't have permissions.");
 			}
 			return true;
+		}
+		
+		//SET THE SPECTATOR POINT
+		if (commandName.equalsIgnoreCase(CommandList.CMD_SET_SPECSPAWN)) {
+			if (permissionModule.getPermission(CommandList.CMD_SET_ROUNDLIMIT, player)) {
+				arenaGame.proceedCommandSetSpectatorSpawn(player, args);
+			} else {
+				player.sendMessage(ChatColor.RED + "You don't have permissions.");
+			}
 		}
 		
 		return false;

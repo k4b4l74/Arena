@@ -10,13 +10,16 @@ import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.plugin.Plugin;
 
 public class ArenaPlayerListener extends PlayerListener {
 
 	private ArenaGame arenaGame;
+	private Plugin plugin;
 	
-	public ArenaPlayerListener(ArenaGame aArenaGame) {
+	public ArenaPlayerListener(ArenaGame aArenaGame, Plugin aPlugin) {
 		arenaGame = aArenaGame;
+		plugin = aPlugin;
 	}
 
 	@Override

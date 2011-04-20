@@ -40,6 +40,12 @@ public class ScoreHandler implements ArenaHandler {
 	 * 
 	 */
 	public void onEntityDamage_updateScore(ArenaPlayer deadPlayer, EntityDamageEvent event) {
+		Server server = deadPlayer.getPlayer().getServer();
+		ChatColor color = ChatColor.RED;
+		if (!arenaGame.isOnRedTeam(deadPlayer)) {
+			color = ChatColor.BLUE;
+		}
+		
 		addDeath(deadPlayer);
 		
 		if (event instanceof EntityDamageByEntityEvent) {
@@ -51,10 +57,14 @@ public class ScoreHandler implements ArenaHandler {
 				ArenaPlayer attackerPlayer = arenaGame.getArenaPlayer(damagerPlayer);
 				if (arenaGame.sameTeam(deadPlayer, attackerPlayer)) {
 					//TK
+					server.broadcastMessage(color+attackerPlayer.getPlayer().getName()+" TK his friend "+deadPlayer.getPlayer().getName());
 				} else {
 					addKill(attackerPlayer);
+					server.broadcastMessage(color+deadPlayer.getPlayer().getName()+" has been killed by "+attackerPlayer.getPlayer().getName());
 				}
 			}
+		} else {
+			server.broadcastMessage(color+deadPlayer.getPlayer().getName()+" has been killed ");
 		}
 	}
 	

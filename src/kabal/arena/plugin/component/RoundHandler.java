@@ -4,6 +4,8 @@ package kabal.arena.plugin.component;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bukkit.ChatColor;
+
 import kabal.arena.player.ArenaPlayer;
 import kabal.arena.plugin.ArenaGame;
 
@@ -32,11 +34,20 @@ public class RoundHandler implements ArenaHandler {
 	 * FUNCTION CALLED BY LISTENER
 	 * 
 	 */
-	public boolean onEntityDeath_isATeamWin() {
+	public boolean onEntityDeath_isATeamWin(ArenaPlayer deadPlayer) {
 		boolean teamWin = false;
-		if (isRedTeamWin() || isBlueTeamWin()) {
+		boolean teamRedWin = isRedTeamWin();
+		boolean teamBlueWIn = isBlueTeamWin();
+		
+		if (teamRedWin || teamBlueWIn) {
 			currentRound++;
 			teamWin = true;
+			
+			if (teamRedWin) {
+				deadPlayer.getPlayer().getServer().broadcastMessage(ChatColor.GREEN+"RED Team Win");
+			} else {
+				deadPlayer.getPlayer().getServer().broadcastMessage(ChatColor.GREEN+"BLUE Team Win");
+			}
 		}
 		return teamWin;
 	}

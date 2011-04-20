@@ -84,6 +84,7 @@ public class PlayerHandler implements ArenaHandler {
 		int newHealth = oldHealth - damage;
 		
 		if (newHealth < 0) {
+			event.setDamage(999);
 			willDie = true;
 		}
 		

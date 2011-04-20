@@ -6,14 +6,16 @@ import kabal.arena.plugin.ArenaGame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockListener;
+import org.bukkit.plugin.Plugin;
 
 public class ArenaBlockListener extends BlockListener {
 
 	private ArenaGame arenaGame;
+	private Plugin plugin;
 	
-	public ArenaBlockListener(ArenaGame aArenaGame) {
+	public ArenaBlockListener(ArenaGame aArenaGame, Plugin aPlugin) {
 		arenaGame = aArenaGame;
-		
+		plugin = aPlugin;
 	}
 	
 	@Override
